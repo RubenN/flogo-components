@@ -71,10 +71,10 @@ func (t *MyTrigger) Start() error {
 			for _, handler := range t.handlers {
 				handler.Handle(context.Background(), map[string]interface{}{
 					"msg":     msg,
-					"KWh":     &r.Electricity.KWh,
-					"KWhLow":  &r.Electricity.KWhLow,
-					"W":       &r.Electricity.W,
-					"GasUsed": &r.Gas.LastRecord.Value,
+					"KWh":     r.Electricity.KWh,
+					"KWhLow":  r.Electricity.KWhLow,
+					"W":       r.Electricity.W,
+					"GasUsed": r.Gas.LastRecord.Value,
 				})
 			}
 		}
