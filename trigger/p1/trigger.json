@@ -1,0 +1,44 @@
+{
+  "name": "p1",
+  "version": "0.0.1",
+  "type": "flogo:trigger",
+  "description": "trigger for p1 smartmeter",
+  "author": "Ruben Nellen<ruben.nellen@gmail.com>",
+  "settings":[
+    {
+      "name": "serial_port",
+      "type": "string",
+      "value": "/dev/ttyUSB0"
+    }
+  ],
+  "output": [
+    {
+      "name": "msg",
+      "type": "string"
+    },
+    {
+      "name": "KWhLow",
+      "type": "double"
+    },
+    {
+      "name": "KWh",
+      "type": "double"
+    },
+    {
+      "name": "W",
+      "type": "double"
+    },
+    {
+      "name": "GasUsed",
+      "type": "double"
+    }
+  ],
+  "handler": {
+    "settings": [
+      {
+        "name": "handler_setting",
+        "type": "string"
+      }
+    ]
+  }
+}
