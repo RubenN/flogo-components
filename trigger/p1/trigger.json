@@ -16,7 +16,7 @@
   "output": [
     {
       "name": "msg",
-      "type": "object"
+      "type": "string"
     },
     {
       "name": "KWhLow",

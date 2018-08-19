@@ -2,7 +2,6 @@ package p1
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/TIBCOSoftware/flogo-lib/core/trigger"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
@@ -38,12 +37,12 @@ type MyTrigger struct {
 // Initialize implements trigger.Init.Initialize
 func (t *MyTrigger) Initialize(ctx trigger.InitContext) error {
 	if t.config.Settings == nil {
-		return fmt.Errorf("no settings found for trigger '%s'", t.config.Id)
+		return log.Infof("no settings found for trigger '%s'", t.config.Id)
 	}
 
 	// Make sure the publishKey item exists
 	if _, ok := t.config.Settings["serial_port"]; !ok {
-		return fmt.Errorf("no serial port found for trigger '%s' in settings", t.config.Id)
+		return log.Infof("no serial port found for trigger '%s' in settings", t.config.Id)
 	}
 
 	t.handlers = ctx.GetHandlers()
@@ -70,10 +69,10 @@ func (t *MyTrigger) Start() error {
 			logger.Debugf("%v", msg)
 			for _, handler := range t.handlers {
 				handler.Handle(context.Background(), map[string]interface{}{
-					"msg": msg,
-					"KWh": convertToFloat64(&r.Electricity.KWh),
-					"KWhLow": convertToFloat64(&r.Electricity.KWhLow),
-					"W": convertToFloat64(&r.Electricity.W),
+					"msg":     msg,
+					"KWh":     convertToFloat64(&r.Electricity.KWh),
+					"KWhLow":  convertToFloat64(&r.Electricity.KWhLow),
+					"W":       convertToFloat64(&r.Electricity.W),
 					"GasUsed": convertToFloat64(&r.Gas.LastRecord.Value),
 				})
 			}
@@ -111,9 +110,9 @@ func createSenML(t *dsmrp1.Telegram) string {
 
 	n := senml.Normalize(s)
 
-	dataOut, err := senml.Encode(n, senml.JSON, senml.OutputOptions{PrettyPrint: true})
+	dataOut, err := senml.Encode(n, senml.JSON, senml.OutputOptions{PrettyPrint: false})
 	if err != nil {
-		fmt.Errorf(err.Error())
+		logger.Debugf(err.Error())
 	}
 	return string(dataOut)
 }
