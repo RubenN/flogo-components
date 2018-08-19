@@ -2,7 +2,7 @@ package p1
 
 import (
 	"context"
-
+	"fmt"
 	"github.com/TIBCOSoftware/flogo-lib/core/trigger"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 	"github.com/cisco/senml"
@@ -37,12 +37,12 @@ type MyTrigger struct {
 // Initialize implements trigger.Init.Initialize
 func (t *MyTrigger) Initialize(ctx trigger.InitContext) error {
 	if t.config.Settings == nil {
-		return log.Infof("no settings found for trigger '%s'", t.config.Id)
+		return fmt.Errorf("no settings found for trigger '%s'", t.config.Id)
 	}
 
-	// Make sure the publishKey item exists
+	// Make sure the serial_port item exists
 	if _, ok := t.config.Settings["serial_port"]; !ok {
-		return log.Infof("no serial port found for trigger '%s' in settings", t.config.Id)
+		return fmt.Errorf("no serial port found for trigger '%s' in settings", t.config.Id)
 	}
 
 	t.handlers = ctx.GetHandlers()
