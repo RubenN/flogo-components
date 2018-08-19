@@ -66,12 +66,19 @@ func (t *MyTrigger) Start() error {
 	go func() {
 		for r := range m.C {
 			for _, handler := range t.handlers {
-				handler.Handle(context.Background(), map[string]interface{}{
-					"KWh":     r.Electricity.KWh,
-					"KWhLow":  r.Electricity.KWhLow,
-					"W":       r.Electricity.W,
-					"GasUsed": r.Gas.LastRecord.Value,
-				})
+				trgData := make(map[string]interface{})
+				trgData["KWh"] = r.Electricity.KWh
+				trgData["KWhLow"] = r.Electricity.KWhLow
+				trgData["W"] = r.Electricity.W
+				trgData["GasUsed"] = r.Gas.LastRecord.Value
+				
+				results, err := handler.Handle(context.Background(), trgData)
+				if err != nil {
+					log.Error("Error starting action: ", err.Error())
+				}
+
+				log.Debugf("Ran Handler: [%s]", handler)
+				log.Debugf("Results: [%v]", results)
 			}
 		}
 	}()
