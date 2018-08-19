@@ -2,7 +2,9 @@
   "name": "p1",
   "version": "0.0.1",
   "type": "flogo:trigger",
+  "ref": "github.com/rubenn/flogo-components/trigger/p1",
   "description": "trigger for p1 smartmeter",
+  "homepage": "https://github.com/RubenN/flogo-components/tree/master/trigger/p1",
   "author": "Ruben Nellen<ruben.nellen@gmail.com>",
   "settings":[
     {
@@ -14,23 +16,23 @@
   "output": [
     {
       "name": "msg",
-      "type": "string"
+      "type": "object"
     },
     {
       "name": "KWhLow",
-      "type": "double"
+      "type": "number"
     },
     {
       "name": "KWh",
-      "type": "double"
+      "type": "number"
     },
     {
       "name": "W",
-      "type": "double"
+      "type": "number"
     },
     {
       "name": "GasUsed",
-      "type": "double"
+      "type": "number"
     }
   ],
   "handler": {
