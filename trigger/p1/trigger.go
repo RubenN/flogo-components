@@ -67,11 +67,11 @@ func (t *MyTrigger) Start() error {
 		for r := range m.C {
 			for _, handler := range t.handlers {
 				trgData := make(map[string]interface{})
-				trgData["KWh"] = r.Electricity.KWh
-				trgData["KWhLow"] = r.Electricity.KWhLow
-				trgData["W"] = r.Electricity.W
-				trgData["GasUsed"] = r.Gas.LastRecord.Value
-				
+				trgData["KWh"] = fmt.Sprintf("%6.4f", r.Electricity.KWh)
+				trgData["KWhLow"] = fmt.Sprintf("%6.4f", r.Electricity.KWhLow)
+				trgData["W"] = fmt.Sprintf("%6.4f", r.Electricity.W)
+				trgData["GasUsed"] = fmt.Sprintf("%6.4f", r.Gas.LastRecord.Value)
+
 				results, err := handler.Handle(context.Background(), trgData)
 				if err != nil {
 					log.Error("Error starting action: ", err.Error())
