@@ -3,6 +3,7 @@ package p1
 import (
 	"context"
 	"fmt"
+
 	"github.com/TIBCOSoftware/flogo-lib/core/trigger"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 	"github.com/cisco/senml"
@@ -70,10 +71,10 @@ func (t *MyTrigger) Start() error {
 			for _, handler := range t.handlers {
 				handler.Handle(context.Background(), map[string]interface{}{
 					"msg":     msg,
-					"KWh":     convertToFloat64(&r.Electricity.KWh),
-					"KWhLow":  convertToFloat64(&r.Electricity.KWhLow),
-					"W":       convertToFloat64(&r.Electricity.W),
-					"GasUsed": convertToFloat64(&r.Gas.LastRecord.Value),
+					"KWh":     &r.Electricity.KWh,
+					"KWhLow":  &r.Electricity.KWhLow,
+					"W":       &r.Electricity.W,
+					"GasUsed": &r.Gas.LastRecord.Value,
 				})
 			}
 		}
