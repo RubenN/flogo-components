@@ -67,10 +67,10 @@ func (t *MyTrigger) Start() error {
 		for r := range m.C {
 			for _, handler := range t.handlers {
 				trgData := make(map[string]interface{})
-				trgData["KWh"] = r.Electricity.KWh
-				trgData["KWhLow"] = r.Electricity.KWhLow
-				trgData["W"] = r.Electricity.W
-				trgData["GasUsed"] = r.Gas.LastRecord.Value
+				trgData["KWh"] = float64(r.Electricity.KWh)
+				trgData["KWhLow"] = float64(r.Electricity.KWhLow)
+				trgData["W"] = float64(r.Electricity.W)
+				trgData["GasUsed"] = float64(r.Gas.LastRecord.Value)
 
 				results, err := handler.Handle(context.Background(), trgData)
 				if err != nil {
