@@ -6,6 +6,7 @@ import (
 
 	"github.com/TIBCOSoftware/flogo-lib/core/trigger"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
+	"github.com/cisco/senml"
 	dsmrp1 "github.com/rubenn/go-dsmrp1"
 )
 
@@ -71,6 +72,7 @@ func (t *MyTrigger) Start() error {
 				trgData["KWhLow"] = float64(r.Electricity.KWhLow)
 				trgData["W"] = float64(r.Electricity.W)
 				trgData["GasUsed"] = float64(r.Gas.LastRecord.Value)
+				trgData["SenML"] = createSenML(r)
 
 				results, err := handler.Handle(context.Background(), trgData)
 				if err != nil {
@@ -90,4 +92,28 @@ func (t *MyTrigger) Start() error {
 func (t *MyTrigger) Stop() error {
 	// stop the trigger
 	return nil
+}
+
+func createSenML(t *dsmrp1.Telegram) string {
+	s := senml.SenML{
+		Records: []senml.SenMLRecord{
+			senml.SenMLRecord{
+				BaseName:    "Mill/P1/EnergyUsage/",
+				BaseUnit:    "",
+				BaseVersion: 5,
+			},
+			senml.SenMLRecord{Name: "W", Unit: "W", StringValue: fmt.Sprintf("%6.4f", t.Electricity.W)},
+			senml.SenMLRecord{Name: "KWh", Unit: "KWh", StringValue: fmt.Sprintf("%6.4f", t.Electricity.KWh)},
+			senml.SenMLRecord{Name: "KWhLow", Unit: "KWh", StringValue: fmt.Sprintf("%6.4f", t.Electricity.KWhLow)},
+			senml.SenMLRecord{Name: "GasUsed", Unit: "m3", StringValue: fmt.Sprintf("%6.4f", t.Gas.LastRecord.Value)},
+		},
+	}
+
+	n := senml.Normalize(s)
+
+	dataOut, err := senml.Encode(n, senml.JSON, senml.OutputOptions{PrettyPrint: false})
+	if err != nil {
+		log.Error(err.Error())
+	}
+	return string(dataOut)
 }
