@@ -16,19 +16,19 @@
   "output": [
     {
       "name": "KWhLow",
-      "type": "string"
+      "type": "double"
     },
     {
       "name": "KWh",
-      "type": "string"
+      "type": "double"
     },
     {
       "name": "W",
-      "type": "string"
+      "type": "double"
     },
     {
       "name": "GasUsed",
-      "type": "string"
+      "type": "double"
     }
   ],
   "handler": {
