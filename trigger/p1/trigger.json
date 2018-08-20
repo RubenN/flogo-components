@@ -29,7 +29,7 @@
     {
       "name": "GasUsed",
       "type": "double"
-    }
+    },
     {
       "name": "SenML",
       "type": "string"
