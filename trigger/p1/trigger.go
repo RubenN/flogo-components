@@ -102,10 +102,10 @@ func createSenML(t *dsmrp1.Telegram) string {
 				BaseUnit:    "",
 				BaseVersion: 5,
 			},
-			senml.SenMLRecord{Name: "W", Unit: "W", StringValue: fmt.Sprintf("%6.4f", t.Electricity.W)},
-			senml.SenMLRecord{Name: "KWh", Unit: "KWh", StringValue: fmt.Sprintf("%6.4f", t.Electricity.KWh)},
-			senml.SenMLRecord{Name: "KWhLow", Unit: "KWh", StringValue: fmt.Sprintf("%6.4f", t.Electricity.KWhLow)},
-			senml.SenMLRecord{Name: "GasUsed", Unit: "m3", StringValue: fmt.Sprintf("%6.4f", t.Gas.LastRecord.Value)},
+			senml.SenMLRecord{Name: "W", Unit: "W", Value: convertToFloat64(&t.Electricity.W)},
+			senml.SenMLRecord{Name: "KWh", Unit: "KWh", Value: convertToFloat64(&t.Electricity.KWh)},
+			senml.SenMLRecord{Name: "KWhLow", Unit: "KWh", Value: convertToFloat64(&t.Electricity.KWhLow)},
+			senml.SenMLRecord{Name: "GasUsed", Unit: "m3", Value: convertToFloat64(&t.Gas.LastRecord.Value)},
 		},
 	}
 
@@ -116,4 +116,9 @@ func createSenML(t *dsmrp1.Telegram) string {
 		log.Error(err.Error())
 	}
 	return string(dataOut)
+}
+
+func convertToFloat64(f32 *float32) *float64 {
+	tt := float64(*f32)
+	return &tt
 }
